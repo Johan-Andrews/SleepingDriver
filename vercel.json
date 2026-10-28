@@ -1,14 +1,6 @@
 {
-  "version": 2,
-  "name": "sleep-detector-simulation",
   "cleanUrls": true,
-  "routes": [
-    {
-      "handle": "filesystem"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
-    }
-  ]
+  "framework": null,
+  "buildCommand": null,
+  "outputDirectory": "."
 }

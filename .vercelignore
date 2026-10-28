@@ -1,0 +1,11 @@
+# Ignore Python backend files during Vercel static build
+.venv/
+src/
+tests/
+config/
+data/
+results/
+requirements.txt
+*.py
+*.pyc
+__pycache__/
