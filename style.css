@@ -1,0 +1,593 @@
+/* ==========================================================================
+   SAFEDRIVE AI - MODERN DARK-MODE DASHBOARD STYLES
+   ========================================================================== */
+
+:root {
+    --bg-base: #090d16;
+    --bg-surface: #111827;
+    --bg-surface-elevated: #1f293d;
+    --bg-card: rgba(30, 41, 59, 0.7);
+    --border-color: rgba(255, 255, 255, 0.08);
+    --border-light: rgba(255, 255, 255, 0.15);
+
+    --primary: #3b82f6;
+    --primary-hover: #2563eb;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --cyan: #38bdf8;
+    --purple: #a855f7;
+
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+    --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-base);
+    color: var(--text-primary);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+}
+
+/* 1. TOP NAVBAR */
+.top-navbar {
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-color);
+    padding: 10px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.brand-icon {
+    font-size: 24px;
+}
+
+.brand-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.brand-title {
+    font-weight: 800;
+    font-size: 17px;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, #60a5fa, #38bdf8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.brand-sub {
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.badge-notice {
+    background: #f59e0b;
+    color: #000;
+    font-weight: 700;
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    animation: pulse 1.5s infinite;
+}
+
+.badge-direction {
+    background: rgba(59, 130, 246, 0.15);
+    border: 1px solid rgba(59, 130, 246, 0.35);
+    color: #93c5fd;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: var(--radius-sm);
+}
+
+/* 2. PROMINENT SLEEP TIMER BANNER */
+.sleep-banner {
+    background: rgba(16, 185, 129, 0.15);
+    border-top: 1px solid rgba(16, 185, 129, 0.3);
+    border-bottom: 1px solid rgba(16, 185, 129, 0.3);
+    padding: 10px 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: var(--transition);
+}
+
+.sleep-banner-content {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.sleep-status-icon {
+    font-size: 20px;
+}
+
+.sleep-status-label {
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--text-primary);
+}
+
+.sleep-timer-val {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 26px;
+    font-weight: 800;
+    background: #064e3b;
+    color: #a7f3d0;
+    padding: 3px 18px;
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(16, 185, 129, 0.5);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    transition: var(--transition);
+}
+
+.sleep-threshold-guide {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+/* 3. DASHBOARD MAIN GRID */
+.dashboard-grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    gap: 16px;
+    padding: 16px 24px;
+    max-width: 1600px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+@media (max-width: 1024px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* 4. PANELS & CARDS */
+.panel {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.panel-title {
+    font-weight: 700;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.sub-tag {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 400;
+}
+
+.live-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--success);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--success);
+    animation: blink 1.2s infinite;
+}
+
+.status-pill {
+    padding: 3px 10px;
+    border-radius: var(--radius-sm);
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.status-pill-alert {
+    background: rgba(16, 185, 129, 0.2);
+    color: #34d399;
+    border: 1px solid rgba(16, 185, 129, 0.4);
+}
+
+/* 5. CAMERA VIEWPORT */
+.camera-card {
+    position: relative;
+    width: 100%;
+    height: 250px;
+    background: #000;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+}
+
+.camera-card video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scaleX(-1); /* mirror preview */
+}
+
+.camera-card canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform: scaleX(-1);
+    pointer-events: none;
+}
+
+.camera-status-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 23, 42, 0.85);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    color: var(--text-secondary);
+    font-size: 12px;
+    font-weight: 600;
+    z-index: 10;
+}
+
+.spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+.sim-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #ea580c;
+    color: #fff;
+    padding: 4px 10px;
+    border-radius: var(--radius-sm);
+    font-size: 11px;
+    font-weight: 800;
+    display: none;
+    z-index: 20;
+    animation: pulse 1.5s infinite;
+}
+
+/* 6. STATE BANNER */
+.state-banner {
+    padding: 10px;
+    border-radius: var(--radius-md);
+    font-weight: 800;
+    font-size: 13px;
+    text-align: center;
+    margin: 12px 0;
+    letter-spacing: 0.02em;
+    transition: var(--transition);
+}
+
+.state-banner-alert {
+    background: rgba(16, 185, 129, 0.2);
+    border: 1px solid var(--success);
+    color: #34d399;
+}
+
+.state-banner-caution {
+    background: rgba(234, 179, 8, 0.2);
+    border: 1px solid var(--warning);
+    color: #fef08a;
+}
+
+.state-banner-warning {
+    background: rgba(249, 115, 22, 0.25);
+    border: 1px solid #f97316;
+    color: #fdba74;
+}
+
+.state-banner-intervention {
+    background: rgba(239, 68, 68, 0.3);
+    border: 1px solid var(--danger);
+    color: #fca5a5;
+    animation: pulse 1s infinite;
+}
+
+/* 7. METRICS GRID */
+.metrics-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.metric-item {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 8px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.metric-title {
+    font-size: 10px;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.metric-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.text-cyan { color: var(--cyan); }
+.text-accent { color: #f59e0b; }
+.text-green { color: var(--success); }
+.text-red { color: var(--danger); }
+.text-yellow { color: #fbbf24; }
+.text-blue { color: #60a5fa; }
+
+/* 8. BUTTONS & CONTROLS */
+.action-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.btn {
+    flex: 1;
+    padding: 10px 14px;
+    border-radius: var(--radius-md);
+    font-weight: 700;
+    font-size: 12px;
+    border: none;
+    cursor: pointer;
+    transition: var(--transition);
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    text-align: center;
+}
+
+.btn-warning {
+    background: #d97706;
+    color: #fff;
+}
+.btn-warning:hover { background: #b45309; }
+
+.btn-success {
+    background: #059669;
+    color: #fff;
+}
+.btn-success:hover { background: #047857; }
+
+.btn-primary {
+    background: var(--primary);
+    color: #fff;
+}
+.btn-primary:hover { background: var(--primary-hover); }
+
+.btn-outline {
+    background: transparent;
+    border: 1px solid var(--border-light);
+    color: var(--text-secondary);
+}
+.btn-outline:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-primary);
+}
+
+.btn-sm {
+    padding: 4px 10px;
+    font-size: 11px;
+}
+
+.shortcuts-hint {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    color: var(--text-muted);
+    margin-top: 6px;
+}
+
+/* 9. HIGHWAY SIMULATION CANVAS */
+.canvas-container {
+    width: 100%;
+    background: #090d16;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+}
+
+.canvas-container canvas {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.strategy-badge {
+    background: #1e3a8a;
+    color: #93c5fd;
+    padding: 3px 8px;
+    border-radius: var(--radius-sm);
+    font-size: 11px;
+    font-weight: 700;
+}
+
+/* 10. VEHICLE STATS GRID */
+.vehicle-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin: 12px 0 10px 0;
+}
+
+@media (max-width: 640px) {
+    .vehicle-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.stat-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 8px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.stat-title {
+    font-size: 10px;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+.stat-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
+    font-weight: 800;
+}
+
+/* 11. STRATEGY TOOLBAR */
+.strategy-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 6px;
+    flex-wrap: wrap;
+}
+
+.strategy-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+.strategy-buttons {
+    display: flex;
+    gap: 8px;
+    flex: 1;
+}
+
+.btn-strat {
+    flex: 1;
+    background: rgba(30, 41, 59, 0.5);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    padding: 7px 10px;
+    border-radius: var(--radius-sm);
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn-strat:hover {
+    background: rgba(59, 130, 246, 0.15);
+    color: var(--text-primary);
+}
+
+.btn-strat.active {
+    background: #1e3a8a;
+    border-color: #3b82f6;
+    color: #93c5fd;
+    font-weight: 700;
+}
+
+.strategy-desc {
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-top: 8px;
+    padding: 8px 12px;
+    background: rgba(15, 23, 42, 0.5);
+    border-radius: var(--radius-sm);
+    border-left: 3px solid var(--primary);
+}
+
+/* 12. FOOTER */
+.footer {
+    text-align: center;
+    padding: 16px;
+    font-size: 11px;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border-color);
+    margin-top: auto;
+}
+
+.footer-sub {
+    font-size: 10px;
+    margin-top: 3px;
+    color: #475569;
+}
+
+/* 13. ANIMATIONS */
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.85; transform: scale(0.98); }
+}

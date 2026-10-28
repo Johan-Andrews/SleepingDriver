@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autonomous Driver Drowsiness Detection & Adaptive Braking Simulation</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- MediaPipe Face Mesh & Camera Utils -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+    <!-- TOP NAVBAR -->
+    <header class="top-navbar">
+        <div class="brand">
+            <span class="brand-icon">🚗</span>
+            <div class="brand-text">
+                <span class="brand-title">SafeDrive AI</span>
+                <span class="brand-sub">Driver Drowsiness Detection &amp; Adaptive Braking Simulation</span>
+            </div>
+        </div>
+        <div class="nav-actions">
+            <div id="audioNotice" class="badge-notice" onclick="enableAudio()">🔔 Click to Enable Audio Buzzer</div>
+            <button class="btn btn-sm btn-outline" id="audioToggleBtn" onclick="toggleAudio()">🔊 Buzzer: ACTIVE</button>
+            <div class="badge-direction">🧭 ROAD DIRECTION: EAST ➔</div>
+        </div>
+    </header>
+
+    <!-- PROMINENT SLEEP TIMER BANNER WITH DYNAMIC THRESHOLD COLORS -->
+    <div class="sleep-banner" id="sleepBanner">
+        <div class="sleep-banner-content">
+            <span class="sleep-status-icon" id="sleepIcon">🟢</span>
+            <span class="sleep-status-label" id="sleepLabel">Driver Awake &amp; Attentive:</span>
+            <span class="sleep-timer-val" id="topSleepTimer">0.0 s</span>
+            <span class="sleep-threshold-guide">[Buzzer at 2.0s | Autonomous Braking at 5.0s | Awake = Accelerate &amp; Resume]</span>
+        </div>
+    </div>
+
+    <!-- MAIN DASHBOARD CONTAINER -->
+    <main class="dashboard-grid">
+
+        <!-- LEFT PANEL: CAMERA & FACIAL TELEMETRY -->
+        <section class="panel panel-driver">
+            <div class="panel-header">
+                <div class="panel-title">
+                    <span class="dot live-dot"></span>
+                    <span>Driver Facial AI Telemetry</span>
+                </div>
+                <span class="status-pill status-pill-alert" id="driverStatusPill">DRIVER HAS CONTROL</span>
+            </div>
+
+            <!-- CAMERA VIEWPORT -->
+            <div class="camera-card">
+                <video id="webcamVideo" playsinline autoplay muted></video>
+                <canvas id="faceOverlayCanvas"></canvas>
+                <div class="camera-status-overlay" id="camStatusOverlay">
+                    <span class="spinner" id="camSpinner"></span>
+                    <span id="camStatusText">Initializing AI Face Tracker...</span>
+                </div>
+                <div class="sim-badge" id="simBadge">SIMULATION OVERRIDE (D KEY)</div>
+            </div>
+
+            <!-- STATE DESCRIPTION BANNER -->
+            <div class="state-banner state-banner-alert" id="stateDescBanner">
+                DRIVER HAS CONTROL (NORMAL CRUISING)
+            </div>
+
+            <!-- TELEMETRY METRICS GRID -->
+            <div class="metrics-grid">
+                <div class="metric-item">
+                    <span class="metric-title">Input Source</span>
+                    <span class="metric-value text-cyan" id="metricSource">LIVE WEBCAM AI</span>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-title">Drowsiness Score</span>
+                    <span class="metric-value text-accent" id="metricScore">0.0 / 100</span>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-title">Eye State</span>
+                    <span class="metric-value" id="metricEye">OPEN (EAR: 0.33)</span>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-title">Head Pitch</span>
+                    <span class="metric-value" id="metricPitch">0.0° (Upright)</span>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-title">PERCLOS (Eyes Closed)</span>
+                    <span class="metric-value" id="metricPerclos">0.0%</span>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-title">Calibration</span>
+                    <span class="metric-value text-green" id="metricCalib">CALIBRATING (5s)</span>
+                </div>
+            </div>
+
+            <!-- INTERACTIVE SHORTCUT BUTTONS -->
+            <div class="action-buttons">
+                <button class="btn btn-warning" id="btnSleep" onclick="triggerDrowsy()">
+                    😴 Simulate Falling Asleep [D]
+                </button>
+                <button class="btn btn-success" id="btnWake" onclick="triggerAwake()">
+                    ✋ Wake Up / Driver In Control [SPACE]
+                </button>
+            </div>
+            <div class="shortcuts-hint">
+                <span>Press <b>[D]</b>: Simulates asleep for 2.0s &amp; counts up</span>
+                <span>Press <b>[SPACE]</b>: Restores alertness &amp; webcam</span>
+            </div>
+        </section>
+
+        <!-- RIGHT PANEL: 2-LANE HIGHWAY SIMULATION -->
+        <section class="panel panel-highway">
+            <div class="panel-header">
+                <div class="panel-title">
+                    <span>🛣️ Top-View 2-Lane Highway Simulation</span>
+                    <span class="sub-tag">(Independent Traffic, Overtaking &amp; Follower Braking)</span>
+                </div>
+                <span class="strategy-badge" id="strategyBadge">ADAPTIVE BRAKING</span>
+            </div>
+
+            <!-- 2D CANVAS SIMULATION VIEWPORT -->
+            <div class="canvas-container">
+                <canvas id="roadCanvas" width="860" height="320"></canvas>
+            </div>
+
+            <!-- RE-ACCELERATE / START DRIVING BUTTON -->
+            <div class="action-buttons" style="margin-top: 10px;">
+                <button class="btn btn-primary" id="btnDrive" onclick="startDriving()">
+                    🚀 Start / Re-Accelerate Driving [R]
+                </button>
+            </div>
+
+            <!-- LIVE VEHICLE TELEMETRY STATS -->
+            <div class="vehicle-stats-grid">
+                <div class="stat-card">
+                    <span class="stat-title">YOUR SPEED</span>
+                    <span class="stat-value text-blue" id="egoSpeedVal">100 km/h</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-title">FOLLOWER SPEED</span>
+                    <span class="stat-value text-red" id="follSpeedVal">100 km/h</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-title">FOLLOWER STATUS / GAP</span>
+                    <span class="stat-value text-yellow" id="follGapVal">30.0 m</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-title">COLLISION RISK</span>
+                    <span class="stat-value text-green" id="collisionRiskVal">SAFE</span>
+                </div>
+            </div>
+
+            <!-- BRAKING STRATEGY CONTROLLERS -->
+            <div class="strategy-toolbar">
+                <span class="strategy-label">Braking Strategy:</span>
+                <div class="strategy-buttons">
+                    <button class="btn-strat" id="stratAbrupt" onclick="setStrategy('abrupt')">1. Abrupt (Hard Stop)</button>
+                    <button class="btn-strat" id="stratGradual" onclick="setStrategy('gradual')">2. Gradual (Jerk-Limited)</button>
+                    <button class="btn-strat active" id="stratAdaptive" onclick="setStrategy('adaptive')">3. Adaptive (Lookahead Gap-Aware)</button>
+                </div>
+            </div>
+            <div class="strategy-desc" id="strategyDesc">
+                <b>Adaptive Strategy:</b> Computes follower time-to-collision (TTC) and smoothly modulates deceleration to prevent rear-end collisions.
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div>SafeDrive AI • Autonomous Drowsiness Detection &amp; Multi-Vehicle Traffic Simulation</div>
+        <div class="footer-sub">Ready for Vercel Serverless / Static Hosting • 100% Client-Side WebAssembly AI</div>
+    </footer>
+
+    <!-- MAIN APP SCRIPT -->
+    <script src="app.js"></script>
+</body>
+</html>

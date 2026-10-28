@@ -1,0 +1,56 @@
+camera:
+  source: webcam          # webcam | video
+  index: 0
+  video_path: data/test_videos/sample.mp4
+  width: 640
+  height: 480
+
+detection:
+  ear_closed_ratio: 0.75
+  ear_default_threshold: 0.21
+  eye_closure_trigger_s: 3.0
+  blink_max_s: 0.5
+  perclos_window_s: 60
+  mar_yawn_threshold: 0.6
+  yawn_min_duration_s: 1.5
+  pitch_down_deg: 20
+  nod_duration_s: 2.0
+  no_face_timeout_s: 2.0
+  smoothing_frames: 5
+
+fusion:
+  weights:
+    eye_closure: 0.4
+    perclos: 0.3
+    head_nod: 0.2
+    yawn: 0.1
+  caution_score: 35
+  warning_score: 60
+  hysteresis: 8
+
+alerts:
+  response_interval_s: 5.0
+  recovery_hold_s: 2.0
+
+vehicle:
+  initial_speed_kmh: 100.0
+  length_m: 4.5
+  accel_max: 3.0
+  friction: dry           # dry | wet | icy
+  g: 9.81
+
+braking:
+  strategy: adaptive      # abrupt | gradual | adaptive
+  gradual_jerk: 2.0       # m/s^3
+  gradual_cap: 4.0        # m/s^2
+  v2v_alert: true
+
+follower:
+  type: attentive         # attentive | distracted | acc
+  initial_gap_m: 30.0
+  reaction_time_s: 1.0
+  brake_fraction: 0.6
+
+sim:
+  dt: 0.01
+  seed: 42
